@@ -967,11 +967,6 @@ mkdirp@0.5.3:
   dependencies:
     minimist "^1.2.5"
 
-moch@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/moch/-/moch-0.0.1.tgz#b4036f32f6b5e3936f12c3fe78c5b81d951a7342"
-  integrity sha1-tANvMva145NvEsP+eMW4HZUac0I=
-
 mocha@^7.1.1:
   version "7.1.1"
   resolved "https://registry.yarnpkg.com/mocha/-/mocha-7.1.1.tgz#89fbb30d09429845b1bb893a830bf5771049a441"
