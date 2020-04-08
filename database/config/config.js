@@ -1,4 +1,4 @@
-{
+module.exports = {
   "development": {
     "username": "api_user",
     "password": "password",
