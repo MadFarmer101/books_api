@@ -18,6 +18,6 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-    queryInterface.bulkInsert
+    queryInterface.bulkInsert("Books", null, {})
   },
 };
