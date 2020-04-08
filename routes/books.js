@@ -1,11 +1,10 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const models = require('../database/models/index')
+const booksController = require("../controllers/booksController");
 
 /* GET books listing. */
-router.get('/', async (req, res, next) => {
-  const books = await models.Book.findAll()
-  res.json({books: books});
-});
+router
+.get("/", booksController.index)
+.get("/:id", booksController.show)
 
 module.exports = router;
