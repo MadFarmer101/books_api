@@ -17,9 +17,10 @@ after((done)=> {
 })
 
 beforeEach(async () => {
+  const author = await factory.create('Author', {id: 10, firstName: 'Thomas'})
  await factory.createMany('Book', 2, [
-    { id: 100, title: 'Learn NodeJS with Thomas'},
-    { id: 900, title: 'Learn NodeJS with Thomas, part II'}
+    { id: 100, title: 'Learn NodeJS with Thomas', AuthorId: author.id},
+    { id: 900, title: 'Learn NodeJS with Thomas, part II', AuthorId: author.id}
   ])
 })
 
@@ -60,5 +61,11 @@ describe('GET /api/v1/books/:id', () => {
     response = await request.get('/api/v1/books/900')
     expect(response.body.book.title)
     .to.equal('Learn NodeJS with Thomas, part II')
+  });
+
+  it('responds with single books author', async () => {
+    response = await request.get('/api/v1/books/900')
+    expect(response.body.book.AuthorId)
+    .to.equal(10)
   });
 })
