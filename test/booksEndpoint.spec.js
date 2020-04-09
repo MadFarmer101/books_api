@@ -48,4 +48,9 @@ describe('GET /api/v1/books/:id', () => {
     expect(response.body.book.id)
     .to.equal(1)
   });
+
+  // it('responds with single books title', async () => {
+  //   expect(response.body.books[0].title)
+  //   .to.equal('Learn NodeJS with Thomas')
+  // });
 })
