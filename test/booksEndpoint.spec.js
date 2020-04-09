@@ -2,6 +2,8 @@ const app = require('../app')
 const supertest = require('supertest')
 const expect = require('chai').expect
 const jsonResponse = require('./jsonResponse')
+const {factory, Models} = require('../test_helpers')
+ 
 
 let server, request, response
 
@@ -12,6 +14,17 @@ before((done) => {
 
 after((done)=> {
   server.close(done)
+})
+
+beforeEach(async () => {
+ await factory.createMany('Book', 2, [
+    { id: 100, title: 'Learn NodeJS with Thomas'},
+    { id: 900, title: 'Learn NodeJS with Thomas, part II'}
+  ])
+})
+
+afterEach(() => {
+  factory.cleanUp()
 })
 
 describe('GET /api/v1/books', () => {
@@ -36,21 +49,16 @@ describe('GET /api/v1/books', () => {
 })
 
 describe('GET /api/v1/books/:id', () => {
-  before(async () => {
-    response = await request.get('/api/v1/books/1') 
-  })
 
-  it('responds with status 200', () => {
-    expect(response.status).to.equal(200)
-  });
-
-  it('responds with a single book', () => {
+  it('responds with a single book', async () => {
+    response = await request.get('/api/v1/books/100')
     expect(response.body.book.id)
-    .to.equal(1)
+    .to.equal(100)
   });
 
-  // it('responds with single books title', async () => {
-  //   expect(response.body.books[0].title)
-  //   .to.equal('Learn NodeJS with Thomas')
-  // });
+  it('responds with single books title', async () => {
+    response = await request.get('/api/v1/books/900')
+    expect(response.body.book.title)
+    .to.equal('Learn NodeJS with Thomas, part II')
+  });
 })
