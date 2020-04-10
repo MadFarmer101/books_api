@@ -6,7 +6,6 @@ const {
 } = require('sequelize-test-helpers');
 const { factory, expect } = require('../../test_helpers');
 
-// we need to import the models directly to avoid connecting to the db
 const Book = require('../../models/book');
 const Author = require('../../models/author');
 
