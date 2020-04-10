@@ -1,73 +1,71 @@
-const app = require('../app')
-const supertest = require('supertest')
-const expect = require('chai').expect
-const jsonResponse = require('./jsonResponse')
-const {factory, Models} = require('../test_helpers')
- 
+const app = require('../app');
+const supertest = require('supertest');
+const { factory, expect } = require('../test_helpers');
 
-let server, request, response
 
-before((done) => {
-  server = app.listen(done)
-  request = supertest.agent(server)
-})
+let server, request, response;
 
-after((done)=> {
-  server.close(done)
-})
+before(done => {
+  server = app.listen(done);
+  request = supertest.agent(server);
+});
+
+after(done => {
+  server.close(done);
+});
 
 beforeEach(async () => {
-  const author = await factory.create('Author', {id: 10, firstName: 'Thomas', lastName: 'Ochman'})
- await factory.createMany('Book', 2, [
-    { id: 100, title: 'Learn NodeJS with Thomas', AuthorId: author.id},
-    { id: 900, title: 'Learn NodeJS with Thomas, part II', AuthorId: author.id}
-  ])
-})
+  const author = await factory.create('Author',
+    { id: 10, firstName: 'Thomas', lastName: 'Ochman' }
+  );
+  await factory.createMany('Book', 2, [
+    { id: 100, title: 'Learn NodeJS with Thomas', AuthorId: author.id },
+    { id: 900, title: 'Learn NodeJS with Thomas - The Sequel', AuthorId: author.id }
+  ]);
+});
 
-afterEach(async() => {
-await  factory.cleanUp()
-})
+afterEach(async () => {
+  await factory.cleanUp();
+});
 
 describe('GET /api/v1/books', () => {
-  before(async () => {
-    response = await request.get('/api/v1/books') 
-  })
+  beforeEach(async () => {
+    response = await request.get('/api/v1/books');
+  });
 
   it('responds with status 200', () => {
-    expect(response.status).to.equal(200)
+    expect(response.status).to.equal(200);
   });
 
-  it('responds with list of books as an array', () => {
-    console.table(response.body.books)
-    expect(response.body.books)
-    .to.be.an('array')
-  });
-
-  // it('returns title', () => {
-  //   expect(response.body.books[0].title)
-  //   .to.equal('Learn NodeJS with Thomas')
+  // it('responds with list of booksas an array', () => {
+  //   expect(Array.isArray(response.body.books))
+  //     .to.equal(true)
   // });
-})
+
+  it('responds with list of booksas an array', () => {
+    expect(response.body.books)
+      .to.be.an('array');
+  });
+
+  it('returns title for books', () => {
+    expect(response.body.books[0].title).to.equal('Learn NodeJS with Thomas');
+  });
+});
 
 describe('GET /api/v1/books/:id', () => {
 
-  it('responds with a single book', async () => {
-    response = await request.get('/api/v1/books/100')
-    expect(response.body.book.id)
-    .to.equal(100)
+  it('responds with a single book - id', async () => {
+    response = await request.get('/api/v1/books/100');
+    expect(response.body.book.id).to.equal(100);
   });
 
-  it('responds with single books title', async () => {
-    response = await request.get('/api/v1/books/900')
-    expect(response.body.book.title)
-    .to.equal('Learn NodeJS with Thomas, part II')
+  it('responds with a single book - title', async () => {
+    response = await request.get('/api/v1/books/900');
+    expect(response.body.book.title).to.equal('Learn NodeJS with Thomas - The Sequel');
   });
 
-  it('responds with single books author', async () => {
-    response = await request.get('/api/v1/books/900')
-    expect(response.body.book.Author.firstName)
-    .to.equal('Thomas')
+  it('responds with a single book - including author', async () => {
+    response = await request.get('/api/v1/books/900');
+    expect(response.body.book.author.fullName).to.equal('Thomas Ochman');
   });
-
-
-})
+});

@@ -13,13 +13,17 @@
     "express": "~4.17.1",
     "pg": "^8.0.0",
     "pg-hstore": "^2.3.3",
-    "sequelize": "^5.21.6"
+    "sequelize": "^5.21.6",
+    "sinon": "^9.0.2"
   },
   "devDependencies": {
     "chai": "^4.2.0",
+    "chai-subset": "^1.6.0",
     "factory-girl": "^5.0.4",
     "mocha": "^7.1.1",
     "nodemon": "^2.0.2",
+    "sequelize-test-helpers": "^1.2.2",
+    "sinon-chai": "^3.5.0",
     "supertest": "^4.0.2"
   },
   "mocha": {
